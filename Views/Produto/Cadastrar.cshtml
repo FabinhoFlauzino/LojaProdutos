@@ -1,4 +1,6 @@
-﻿@{
+﻿@using LojaProdutos.Dto.Produto
+@model CriarProdutoDto
+@{
     var categorias = ViewBag.Categorias;
 }
 
@@ -8,33 +10,39 @@
 
         <div class="mb-1">
             <label class="form-label" for="foto">Foto:</label>
-            <input class="form-control shadow-none" type="file" name="foto" id="foto" />
+            <input class="form-control shadow-none" type="file" asp-for="Foto" id="foto" />
+            <span asp-validation-for="Foto"></span>
         </div>
 
         <div class="mb-1">
             <label class="form-label" for="nome">Nome:</label>
-            <input class="form-control shadow-none" type="text" name="nome" id="nome" />
+            <input class="form-control shadow-none" type="text" asp-for="Nome" id="nome" />
+            <span asp-validation-for="Nome"></span>
         </div>
 
         <div class="mb-1">
             <label class="form-label" for="marca">Marca:</label>
-            <input class="form-control shadow-none" type="text" name="marca" id="marca" />
+            <input class="form-control shadow-none" type="text" asp-for="Marca" id="marca" />
+            <span asp-validation-for="Marca"></span>
         </div>
 
         <div class="mb-1">
             <label class="form-label" for="valor">Valor:</label>
-            <input class="form-control shadow-none" type="number" name="valor" id="valor" min="1" step="any" />
+            <input class="form-control shadow-none" type="number" asp-for="Valor" id="valor" min="1" step="any" />
+            <span asp-validation-for="Valor"></span>
         </div>
 
         <div class="mb-1">
             <label class="form-label" for="quantidade">Quantidade:</label>
-            <input class="form-control shadow-none" type="number" name="quantidade" id="quantidade" min="1" step="any" />
+            <input class="form-control shadow-none" type="number" asp-for="QuantidadeEstoque" id="quantidade" min="1" step="any" />
+            <span asp-validation-for="QuantidadeEstoque"></span>
         </div>
 
         <div class="mb-1">
             <label class="form-label" for="nome">Categoria:</label>
-            <select class="form-select" asp-items="@(new SelectList(categorias, "Id", "Nome"))">
+            <select asp-for="CategoriaModelId" class="form-select" asp-items="@(new SelectList(categorias, "Id", "Nome"))">
             </select>
+            <span asp-validation-for="CategoriaModelId"></span>
         </div>
 
         <div class="d-flex mt-3">
