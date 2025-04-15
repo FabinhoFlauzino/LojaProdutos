@@ -1,4 +1,5 @@
-﻿using LojaProdutos.Services.Categoria;
+﻿using LojaProdutos.Dto.Produto;
+using LojaProdutos.Services.Categoria;
 using LojaProdutos.Services.Produtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,5 +25,20 @@ public class ProdutoController : Controller
     {
         ViewBag.Categorias = await _categoriaInterface.BuscarCategorias();
         return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Cadastrar(CriarProdutoDto criarProdutoDto, IFormFile foto)
+    {
+        if (ModelState.IsValid)
+        {
+            var produto = await _produtoInterface.Cadastrar(criarProdutoDto, foto);
+            return RedirectToAction("Index", "Produto");
+        }
+        else 
+        {
+            ViewBag.Categorias = await _categoriaInterface.BuscarCategorias();
+            return View(criarProdutoDto);
+        }
     }
 }
