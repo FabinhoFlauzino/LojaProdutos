@@ -16,6 +16,19 @@ public class ProdutoService : IProdutoInterface
         _sistema = sistema.WebRootPath;
     }
 
+    public async Task<ProdutoModel> BuscarProdutoPorId(int id)
+    {
+        try
+        {
+            var produto = await _context.Produtos.Include(x => x.Categoria).FirstOrDefaultAsync();
+            return produto;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
     public async Task<List<ProdutoModel>> BuscarProdutos()
     {
         try
