@@ -1,6 +1,19 @@
 ﻿@using LojaProdutos.Models
 @model List<ProdutoModel>
 
+<style>
+    table td {
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    table td img {
+        width: 100% !important;
+        max-width: 60px !important;
+        height: auto;
+    }
+</style>
+
 <section class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Listagem de Produtos</h2>
@@ -10,58 +23,64 @@
         </a>
     </div>
 
-    <table class="table table-hover table-bordered">
-        <thead class="table-dark">
-            <tr>
-                <th></th>
-                <th>Nome</th>
-                <th>Marca</th>
-                <th>Categoria</th>
-                <th>Quantidade</th>
-                <th>Valor</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.Count() > 0) @* <!-- Verifica se existem produtos na lista --> *@
-            {
-                @foreach (var produto in Model) @* <!-- Loop pelos produtos recebidos do controller --> *@
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th></th>
+                    <th>Nome</th>
+                    <th>Marca</th>
+                    <th>Categoria</th>
+                    <th>Quantidade</th>
+                    <th>Valor</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count() > 0) @* <!-- Verifica se existem produtos na lista --> *@
+                {
+                    @foreach (var produto in Model) @* <!-- Loop pelos produtos recebidos do controller --> *@
+                    {
+                        <tr>
+                            @if (!string.IsNullOrEmpty(produto.Foto)) @* <!-- Verifica se o produto possui uma imagem cadastrada --> *@
+                            {
+                                <td>
+                                    <div style="width: 50px;" class="rounded-circle overflow-hidden border">
+                                        <img src="~/imagem/@produto.Foto" class="img-fluid" />
+                                    </div>
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+
+                            <td>@produto.Nome</td>
+                            <td>@produto.Marca</td>
+                            <td>@produto.Categoria.Nome</td>
+                            <td>@produto.QuantidadeEstoque</td>
+                            <td>R$ @produto.Valor.ToString("F2")</td>
+                            <td>
+                                <a class="btn btn-info">
+                                    <i class="bi bi-pencil me-1"></i>
+                                    Editar
+                                </a>
+                                <a class="btn btn-danger">
+                                    <i class="bi bi-x-circle me-1"></i>
+                                    Excluir
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
                 {
                     <tr>
-                        @if (!string.IsNullOrEmpty(produto.Foto)) @* <!-- Verifica se o produto possui uma imagem cadastrada --> *@
-                        {
-                            <td width="50px" height="50px"><img src="~/imagem/@produto.Foto"  class="img-fluid"/></td>
-                        }
-                        else
-                        {
-                            <td></td>
-                        }
-
-                        <td>@produto.Nome</td>
-                        <td>@produto.Marca</td>
-                        <td>@produto.Categoria.Nome</td>
-                        <td>@produto.QuantidadeEstoque</td>
-                        <td>R$ @produto.Valor.ToString("F2")</td>
-                        <td>
-                            <a class="btn btn-info">
-                                <i class="bi bi-pencil me-1"></i>
-                                Editar
-                            </a>
-                            <a class="btn btn-danger">
-                                <i class="bi bi-x-circle me-1"></i>
-                                Excluir
-                            </a>
-                        </td>
+                        <!-- Caso a lista esteja vazia, exibe uma mensagem -->
+                        <td colspan="7" class="text-center">Nenhum produto cadastrado.</td>
                     </tr>
                 }
-            }
-            else
-            {
-                <tr>
-                    <!-- Caso a lista esteja vazia, exibe uma mensagem -->
-                    <td colspan="7" class="text-center">Nenhum produto cadastrado.</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </section>
