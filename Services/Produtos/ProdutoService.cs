@@ -20,7 +20,7 @@ public class ProdutoService : IProdutoInterface
     {
         try
         {
-            var produto = await _context.Produtos.Include(x => x.Categoria).FirstOrDefaultAsync();
+            var produto = await _context.Produtos.Include(x => x.Categoria).FirstOrDefaultAsync(p => p.Id == id);
             return produto;
         }
         catch (Exception ex)
@@ -68,6 +68,49 @@ public class ProdutoService : IProdutoInterface
             throw new Exception(ex.Message);
         }
     }
+
+    public async Task<ProdutoModel> Editar(EditarProdutoDto editarProdutoDto, IFormFile foto)
+    {
+        try
+        {
+            var produto = await BuscarProdutoPorId(editarProdutoDto.Id);
+
+            var nomeCaminhoImagem = "";
+
+            if(foto != null)
+            {
+                string caminhoCapaExistente = _sistema + "\\imagem\\" + produto.Foto;
+
+                if(File.Exists(caminhoCapaExistente))
+                {
+                    File.Delete(caminhoCapaExistente);
+                }
+
+                nomeCaminhoImagem = GeraCaminhoArquivo(foto);
+            }
+
+            produto.Nome = editarProdutoDto.Nome;
+            produto.Marca = editarProdutoDto.Marca;
+            produto.Valor = editarProdutoDto.Valor;
+            produto.QuantidadeEstoque = editarProdutoDto.QuantidadeEstoque;
+            produto.CategoriaModelId = editarProdutoDto.CategoriaModelId;
+
+            if (nomeCaminhoImagem != "")
+            {
+                produto.Foto = nomeCaminhoImagem;
+            }
+
+            _context.Update(produto);
+            await _context.SaveChangesAsync();
+
+            return produto;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
     private string GeraCaminhoArquivo(IFormFile foto)
     {
         var codigoUnico = Guid.NewGuid().ToString();
