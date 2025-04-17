@@ -27,6 +27,12 @@ public class ProdutoController : Controller
         return View();
     }
 
+    public async Task<IActionResult> Remover(int id)
+    {
+        var produto = await _produtoInterface.Remover(id);
+        return RedirectToAction("Index", "Produto");
+    }
+
     public async Task<IActionResult> Editar(int id)
     {
         var produto = await _produtoInterface.BuscarProdutoPorId(id);
@@ -62,7 +68,7 @@ public class ProdutoController : Controller
 
     [HttpPost]
     public async Task<IActionResult> Editar(EditarProdutoDto editarProdutoDto, IFormFile? foto)
-    {
+        {
         if (ModelState.IsValid)
         {
             var produto = await _produtoInterface.Editar(editarProdutoDto, foto);
