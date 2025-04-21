@@ -10,4 +10,5 @@ public interface IProdutoInterface
     Task<ProdutoModel> BuscarProdutoPorId(int id);
     Task<ProdutoModel> Editar(EditarProdutoDto editarProdutoDto, IFormFile foto);
     Task<ProdutoModel> Remover(int id);
+    Task<List<ProdutoModel>> BuscarProdutoFiltro(string? pesquisar);
 }

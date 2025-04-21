@@ -128,6 +128,21 @@ public class ProdutoService : IProdutoInterface
         }
     }
 
+    public async Task<List<ProdutoModel>> BuscarProdutoFiltro(string? pesquisar)
+    {
+        try
+        {
+            var produtos = await _context.Produtos.Include(x => x.Categoria)
+                                                  .Where(p => p.Nome.Contains(pesquisar) || p.Marca.Contains(pesquisar))
+                                                  .ToListAsync();
+            return produtos;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
     private string GeraCaminhoArquivo(IFormFile foto)
     {
         var codigoUnico = Guid.NewGuid().ToString();
